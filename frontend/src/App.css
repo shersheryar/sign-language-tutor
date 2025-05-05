@@ -1,0 +1,17 @@
+/* App.css or index.css */
+.card {
+  margin-top: 20px;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.form-control {
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  width: 100%;
+}
+@import '@fortawesome/fontawesome-free/css/all.min.css';
