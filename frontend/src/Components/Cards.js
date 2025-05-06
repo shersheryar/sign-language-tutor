@@ -1,6 +1,6 @@
 // import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 // import { getAuth } from "firebase/auth";
-// import { app } from "../firebase"; // assuming you have firebase.js that exports 
+// import { app } from "../firebase/firebase"; // assuming you have firebase.js that exports 
 
 
 
@@ -160,9 +160,179 @@ export default AlphabetPage;
 
 
 
+// // import { useState, useEffect } from "react";
+// // import { useNavigate, useLocation } from "react-router-dom";
+// // import { auth, db } from "../firebase"; // Adjust the path as needed
+// // import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+
+// // const AlphabetPage = () => {
+// //   const navigate = useNavigate();
+// //   const location = useLocation();
+// //   const result = location.state?.result || "";
+// //   const index = location.state?.index;
+
+// //   const urduAlphabets = [
+// //   { urdu: "ب", image: require("../assets/bay.jpg") },
+// //   { urdu: "ع", image: require("../assets/ain.jpg") },
+// //   { urdu: "غ", image: require("../assets/ghain.jpg") },
+// //   { urdu: "ل", image: require("../assets/lam.jpg") },
+// //   { urdu: "خ", image: require("../assets/khay.jpg") },
+// //   { urdu: "م", image: require("../assets/meem.jpg") },
+// //   { urdu: "پ", image: require("../assets/pay.jpg") },
+// //   { urdu: "ٻ", image: require("../assets/byeh.jpg") },
+// //   { urdu: "چ", image: require("../assets/chay.jpg") },
+// //   { urdu: "ڃ", image: require("../assets/cyeh.jpg") },
+// //   { urdu: "ڈ", image: require("../assets/daal.jpg") },
+// //   { urdu: "د", image: require("../assets/dal.jpg") },
+// //   { urdu: "ف", image: require("../assets/fay.jpg") },
+// //   { urdu: "گ", image: require("../assets/gaaf.jpg") },
+// //   { urdu: "ح", image: require("../assets/hay.jpg") },
+// //   { urdu: "ک", image: require("../assets/kaf.jpg") },
+// //   { urdu: "ق", image: require("../assets/kiaf.jpg") },
+// //   { urdu: "ن", image: require("../assets/nuun.jpg") },
+// //   { urdu: "ں", image: require("../assets/nuungh.jpg") },
+// //   { urdu: "ر", image: require("../assets/ray.jpg") },
+// //   { urdu: "ث", image: require("../assets/say.jpg") },
+// //   { urdu: "س", image: require("../assets/seen.jpg") },
+// //   { urdu: "ش", image: require("../assets/sheen.jpg") },
+// //   { urdu: "ص", image: require("../assets/suad.jpg") },
+// //   { urdu: "ط", image: require("../assets/taay.jpg") },
+// // ];
+
+
+// //   const [unlockedAlphabets, setUnlockedAlphabets] = useState(
+// //     Array(urduAlphabets.length).fill(false)
+// //   );
+
+// //   const [loading, setLoading] = useState(true);
+
+// //   const fetchProgress = async (uid) => {
+// //     try {
+// //       const docRef = doc(db, "progress", uid);
+// //       const docSnap = await getDoc(docRef);
+
+// //       if (docSnap.exists()) {
+// //         setUnlockedAlphabets(docSnap.data().unlocked || [true, ...Array(urduAlphabets.length - 1).fill(false)]);
+// //       } else {
+// //         // First time user
+// //         const initial = [true, ...Array(urduAlphabets.length - 1).fill(false)];
+// //         await setDoc(docRef, { unlocked: initial });
+// //         setUnlockedAlphabets(initial);
+// //       }
+// //     } catch (error) {
+// //       console.error("Error fetching progress:", error);
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+// //   const updateProgress = async (uid, index) => {
+// //     const updated = [...unlockedAlphabets];
+// //     updated[index] = true;
+// //     if (index + 1 < updated.length) {
+// //       updated[index + 1] = true;
+// //     }
+// //     setUnlockedAlphabets(updated);
+
+// //     const docRef = doc(db, "progress", uid);
+// //     await updateDoc(docRef, { unlocked: updated });
+// //   };
+
+// //   const resetProgress = async () => {
+// //     const uid = auth.currentUser?.uid;
+// //     if (!uid) return;
+
+// //     const resetState = [true, ...Array(urduAlphabets.length - 1).fill(false)];
+// //     await setDoc(doc(db, "progress", uid), { unlocked: resetState });
+// //     setUnlockedAlphabets(resetState);
+// //   };
+
+// //   useEffect(() => {
+// //     const uid = auth.currentUser?.uid;
+// //     if (uid) {
+// //       fetchProgress(uid);
+// //     }
+// //   }, []);
+
+// //   useEffect(() => {
+// //     const uid = auth.currentUser?.uid;
+// //     if (result === "correct" && index !== undefined && uid) {
+// //       updateProgress(uid, index);
+// //     }
+// //   }, []);
+
+// //   const handlePractice = (idx) => {
+// //     if (unlockedAlphabets[idx]) {
+// //       navigate("/practise", {
+// //         state: {
+// //           letter: urduAlphabets[idx].name,
+// //           index: idx,
+// //           letterImage: urduAlphabets[idx].image,
+// //         },
+// //       });
+// //     }
+// //   };
+
+// //   const progressPercentage =
+// //     (unlockedAlphabets.filter(Boolean).length / urduAlphabets.length) * 100;
+
+// //   if (loading) return <div className="p-4">Loading...</div>;
+
+// //   return (
+// //     <div className="p-4">
+// //       <button
+// //         onClick={resetProgress}
+// //         className="mb-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+// //       >
+// //         Reset Progress
+// //       </button>
+
+// //       <div className="w-full bg-gray-300 rounded-lg overflow-hidden mb-4">
+// //         <div
+// //           className="bg-green-500 text-xs text-white text-center py-1 transition-all duration-500"
+// //           style={{ width: `${progressPercentage}%` }}
+// //         >
+// //           {Math.round(progressPercentage)}% Learned
+// //         </div>
+// //       </div>
+
+// //       <div className="grid grid-cols-4 gap-4">
+// //         {urduAlphabets.map((letter, idx) => (
+// //           <div key={idx} className="border-black border-4">
+// //             <div className="flex flex-col items-center">
+// //               <img
+// //                 src={letter.image}
+// //                 alt={letter.name}
+// //                 className={`w-56 h-56 object-fit ${
+// //                   unlockedAlphabets[idx] ? "" : "opacity-50"
+// //                 }`}
+// //               />
+// //               <button
+// //                 onClick={() => handlePractice(idx)}
+// //                 className={`w-56 p-4 text-2xl font-bold border rounded ${
+// //                   unlockedAlphabets[idx]
+// //                     ? "bg-yellow-200 text-black hover:scale-105"
+// //                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
+// //                 }`}
+// //                 disabled={!unlockedAlphabets[idx]}
+// //               >
+// //                 {letter.name}
+// //               </button>
+// //             </div>
+// //           </div>
+// //         ))}
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default AlphabetPage;
+
+
+// ========================================================================================================================
 // import { useState, useEffect } from "react";
 // import { useNavigate, useLocation } from "react-router-dom";
-// import { auth, db } from "../firebase"; // Adjust the path as needed
+// import { db, auth } from "../firebase/firebase"; // Import Firebase Firestore and Auth
 // import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 // const AlphabetPage = () => {
@@ -172,40 +342,24 @@ export default AlphabetPage;
 //   const index = location.state?.index;
 
 //   const urduAlphabets = [
-//   { urdu: "ب", image: require("../assets/bay.jpg") },
-//   { urdu: "ع", image: require("../assets/ain.jpg") },
-//   { urdu: "غ", image: require("../assets/ghain.jpg") },
-//   { urdu: "ل", image: require("../assets/lam.jpg") },
-//   { urdu: "خ", image: require("../assets/khay.jpg") },
-//   { urdu: "م", image: require("../assets/meem.jpg") },
-//   { urdu: "پ", image: require("../assets/pay.jpg") },
-//   { urdu: "ٻ", image: require("../assets/byeh.jpg") },
-//   { urdu: "چ", image: require("../assets/chay.jpg") },
-//   { urdu: "ڃ", image: require("../assets/cyeh.jpg") },
-//   { urdu: "ڈ", image: require("../assets/daal.jpg") },
-//   { urdu: "د", image: require("../assets/dal.jpg") },
-//   { urdu: "ف", image: require("../assets/fay.jpg") },
-//   { urdu: "گ", image: require("../assets/gaaf.jpg") },
-//   { urdu: "ح", image: require("../assets/hay.jpg") },
-//   { urdu: "ک", image: require("../assets/kaf.jpg") },
-//   { urdu: "ق", image: require("../assets/kiaf.jpg") },
-//   { urdu: "ن", image: require("../assets/nuun.jpg") },
-//   { urdu: "ں", image: require("../assets/nuungh.jpg") },
-//   { urdu: "ر", image: require("../assets/ray.jpg") },
-//   { urdu: "ث", image: require("../assets/say.jpg") },
-//   { urdu: "س", image: require("../assets/seen.jpg") },
-//   { urdu: "ش", image: require("../assets/sheen.jpg") },
-//   { urdu: "ص", image: require("../assets/suad.jpg") },
-//   { urdu: "ط", image: require("../assets/taay.jpg") },
-// ];
-
+//     { name: "Bay", image: require("../assets/bay.jpg") },
+//     { name: "Ain", image: require("../assets/ain.jpg") },
+//     { name: "Ghain", image: require("../assets/ghain.jpg") },
+//     { name: "Lam", image: require("../assets/lam.jpg") },
+//     { name: "Hamza", image: require("../assets/hamza.jpg") },
+//     { name: "Khay", image: require("../assets/khay.jpg") },
+//     { name: "Meem", image: require("../assets/meem.jpg") },
+//     { name: "Pay", image: require("../assets/pay.jpg") },
+//     { name: "Byeh", image: require("../assets/byeh.jpg") },
+//     { name: "Chay", image: require("../assets/chay.jpg") },
+//   ];
 
 //   const [unlockedAlphabets, setUnlockedAlphabets] = useState(
 //     Array(urduAlphabets.length).fill(false)
 //   );
-
 //   const [loading, setLoading] = useState(true);
 
+//   // Fetch progress from Firestore
 //   const fetchProgress = async (uid) => {
 //     try {
 //       const docRef = doc(db, "progress", uid);
@@ -214,10 +368,10 @@ export default AlphabetPage;
 //       if (docSnap.exists()) {
 //         setUnlockedAlphabets(docSnap.data().unlocked || [true, ...Array(urduAlphabets.length - 1).fill(false)]);
 //       } else {
-//         // First time user
-//         const initial = [true, ...Array(urduAlphabets.length - 1).fill(false)];
-//         await setDoc(docRef, { unlocked: initial });
-//         setUnlockedAlphabets(initial);
+//         // First-time user
+//         const initialProgress = [true, ...Array(urduAlphabets.length - 1).fill(false)];
+//         await setDoc(docRef, { unlocked: initialProgress });
+//         setUnlockedAlphabets(initialProgress);
 //       }
 //     } catch (error) {
 //       console.error("Error fetching progress:", error);
@@ -226,18 +380,20 @@ export default AlphabetPage;
 //     }
 //   };
 
+//   // Update progress in Firestore
 //   const updateProgress = async (uid, index) => {
-//     const updated = [...unlockedAlphabets];
-//     updated[index] = true;
-//     if (index + 1 < updated.length) {
-//       updated[index + 1] = true;
+//     const updatedProgress = [...unlockedAlphabets];
+//     updatedProgress[index] = true;
+//     if (index + 1 < updatedProgress.length) {
+//       updatedProgress[index + 1] = true;
 //     }
-//     setUnlockedAlphabets(updated);
+//     setUnlockedAlphabets(updatedProgress);
 
 //     const docRef = doc(db, "progress", uid);
-//     await updateDoc(docRef, { unlocked: updated });
+//     await updateDoc(docRef, { unlocked: updatedProgress });
 //   };
 
+//   // Reset progress in Firestore
 //   const resetProgress = async () => {
 //     const uid = auth.currentUser?.uid;
 //     if (!uid) return;
@@ -259,7 +415,7 @@ export default AlphabetPage;
 //     if (result === "correct" && index !== undefined && uid) {
 //       updateProgress(uid, index);
 //     }
-//   }, []);
+//   }, [result, index]);
 
 //   const handlePractice = (idx) => {
 //     if (unlockedAlphabets[idx]) {
@@ -306,6 +462,174 @@ export default AlphabetPage;
 //                 className={`w-56 h-56 object-fit ${
 //                   unlockedAlphabets[idx] ? "" : "opacity-50"
 //                 }`}
+//               />
+//               <button
+//                 onClick={() => handlePractice(idx)}
+//                 className={`w-56 p-4 text-2xl font-bold border rounded ${
+//                   unlockedAlphabets[idx]
+//                     ? "bg-yellow-200 text-black hover:scale-105"
+//                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
+//                 }`}
+//                 disabled={!unlockedAlphabets[idx]}
+//               >
+//                 {letter.name}
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AlphabetPage;
+
+
+
+// ==============================================================================================
+// import { useState, useEffect } from "react";
+// import { useNavigate, useLocation } from "react-router-dom";
+// import { auth, db } from "../firebase/firebase"; // Corrected path
+// import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+
+// const AlphabetPage = () => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const result = location.state?.result || "";
+//   const index = location.state?.index;
+
+//   const urduAlphabets = [
+//     { name: "Bay", image: require("../assets/bay.jpg") },
+//     { name: "Ain", image: require("../assets/ain.jpg") },
+//     { name: "Ghain", image: require("../assets/ghain.jpg") },
+//     { name: "Lam", image: require("../assets/lam.jpg") },
+//     { name: "Hamza", image: require("../assets/hamza.jpg") },
+//     { name: "Khay", image: require("../assets/khay.jpg") },
+//     { name: "Meem", image: require("../assets/meem.jpg") },
+//     { name: "Pay", image: require("../assets/pay.jpg") },
+//     { name: "Byeh", image: require("../assets/byeh.jpg") },
+//     { name: "Chay", image: require("../assets/chay.jpg") },
+//     { name: "Cyeh", image: require("../assets/cyeh.jpg") },
+//     { name: "Daal", image: require("../assets/daal.jpg") },
+//     { name: "Dal", image: require("../assets/dal.jpg") },
+//     { name: "Fay", image: require("../assets/fay.jpg") },
+//     { name: "Gaaf", image: require("../assets/gaaf.jpg") },
+//     { name: "Hay", image: require("../assets/hay.jpg") },
+//     { name: "Kaf", image: require("../assets/kaf.jpg") },
+//     { name: "Kiaf", image: require("../assets/kiaf.jpg") },
+//     { name: "Nuun", image: require("../assets/nuun.jpg") },
+//     { name: "Nuungh", image: require("../assets/nuungh.jpg") },
+//     { name: "Ray", image: require("../assets/ray.jpg") },
+//     { name: "Say", image: require("../assets/say.jpg") },
+//     { name: "Seen", image: require("../assets/seen.jpg") },
+//     { name: "Sheen", image: require("../assets/sheen.jpg") },
+//     { name: "Suad", image: require("../assets/suad.jpg") },
+//     { name: "Taay", image: require("../assets/taay.jpg") },
+//   ];
+
+//   const [unlockedAlphabets, setUnlockedAlphabets] = useState(
+//     Array(urduAlphabets.length).fill(false)
+//   );
+//   const [loading, setLoading] = useState(true);
+
+//   // Fetch progress from Firestore
+//   useEffect(() => {
+//     const fetchProgress = async () => {
+//       const user = auth.currentUser;
+//       if (!user) return;
+
+//       const progressRef = doc(db, "progress", user.uid);
+//       const docSnap = await getDoc(progressRef);
+
+//       if (docSnap.exists()) {
+//         setUnlockedAlphabets(docSnap.data().unlockedAlphabets);
+//       } else {
+//         // First-time user, set first letter unlocked
+//         const initialProgress = [true, ...Array(urduAlphabets.length - 1).fill(false)];
+//         await setDoc(progressRef, { unlockedAlphabets: initialProgress });
+//         setUnlockedAlphabets(initialProgress);
+//       }
+
+//       setLoading(false);
+//     };
+
+//     fetchProgress();
+//   }, []);
+
+//   // Update Firestore when result is correct
+//   useEffect(() => {
+//     const updateProgress = async () => {
+//       const user = auth.currentUser;
+//       if (!user || result !== "correct" || index === undefined) return;
+
+//       const progressRef = doc(db, "progress", user.uid);
+//       const newUnlocked = [...unlockedAlphabets];
+
+//       newUnlocked[index] = true;
+//       if (index + 1 < urduAlphabets.length) {
+//         newUnlocked[index + 1] = true;
+//       }
+
+//       await updateDoc(progressRef, { unlockedAlphabets: newUnlocked });
+//       setUnlockedAlphabets(newUnlocked);
+//     };
+
+//     updateProgress();
+//   }, []);
+
+//   const handlePractice = (idx) => {
+//     if (unlockedAlphabets[idx]) {
+//       navigate("/practise", {
+//         state: {
+//           letter: urduAlphabets[idx].name,
+//           index: idx,
+//           letterImage: urduAlphabets[idx].image,
+//         },
+//       });
+//     }
+//   };
+
+//   const resetProgress = async () => {
+//     const user = auth.currentUser;
+//     if (!user) return;
+
+//     const resetState = [true, ...Array(urduAlphabets.length - 1).fill(false)];
+//     await setDoc(doc(db, "progress", user.uid), { unlockedAlphabets: resetState });
+//     setUnlockedAlphabets(resetState);
+//     window.location.reload();
+//   };
+
+//   const progressPercentage =
+//     (unlockedAlphabets.filter(Boolean).length / urduAlphabets.length) * 100;
+
+//   if (loading) return <div className="p-4">Loading...</div>;
+
+//   return (
+//     <div className="p-4">
+//       <button
+//         onClick={resetProgress}
+//         className="mb-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+//       >
+//         Reset Progress
+//       </button>
+
+//       <div className="w-full bg-gray-300 rounded-lg overflow-hidden mb-4">
+//         <div
+//           className="bg-green-500 text-xs text-white text-center py-1 transition-all duration-500"
+//           style={{ width: `${progressPercentage}%` }}
+//         >
+//           {Math.round(progressPercentage)}% Learned
+//         </div>
+//       </div>
+
+//       <div className="grid grid-cols-4 gap-4">
+//         {urduAlphabets.map((letter, idx) => (
+//           <div className="border-black border-4" key={idx}>
+//             <div className="flex flex-col items-center">
+//               <img
+//                 src={letter.image}
+//                 alt={letter.name}
+//                 className={`w-56 h-56 object-fit ${unlockedAlphabets[idx] ? "" : "opacity-50"}`}
 //               />
 //               <button
 //                 onClick={() => handlePractice(idx)}

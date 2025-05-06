@@ -41,6 +41,55 @@
 
 
 
+// import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+// import Signup from "./Components/auth/register/Signup";
+// import Signin from "./Components/auth/login/Signin";
+// import Home from "./Home";
+// import Navbar from "./Components/header/Navbar";
+// import Learnpage from "./Learnpage";
+// import Practise from "./Components/Practise";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
+// import { AuthProvider, useAuth } from "./contexts/authContext";
+
+// // ✅ Protect Routes Based on Authentication
+// const ProtectedRoute = ({ children }) => {
+//   const { userLoggedIn } = useAuth();
+//   return userLoggedIn ? children : <Navigate to="/signin" replace />;
+// };
+
+// function App() {
+//   const location = useLocation(); // ✅ Get current route
+//   const hideNavbarRoutes = ["/signin", "/signup"]; // ✅ Define routes where Navbar should be hidden
+
+//   return (
+//     <AuthProvider>
+//       {/* ✅ Show Navbar only if not on Signin or Signup page */}
+//       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+
+//       <Routes>
+//         {/* Public Routes */}
+//         <Route path="/signin" element={<Signin />} />
+//         <Route path="/signup" element={<Signup />} />
+
+//         {/* Protected Routes */}
+//         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+//         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+//         <Route path="/learn" element={<ProtectedRoute><Learnpage /></ProtectedRoute>} />
+//         <Route path="/practise" element={<ProtectedRoute><Practise /></ProtectedRoute>} />
+
+//         {/* ✅ Redirect Unknown Routes */}
+//         <Route path="*" element={<Navigate to="/signin" replace />} />
+//       </Routes>
+//     </AuthProvider>
+//   );
+// }
+
+// export default App;
+
+
+
+
+
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Signup from "./Components/auth/register/Signup";
 import Signin from "./Components/auth/login/Signin";
@@ -51,37 +100,55 @@ import Practise from "./Components/Practise";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { AuthProvider, useAuth } from "./contexts/authContext";
 
-// ✅ Protect Routes Based on Authentication
-const ProtectedRoute = ({ children }) => {
-  const { userLoggedIn } = useAuth();
-  return userLoggedIn ? children : <Navigate to="/signin" replace />;
-};
+// Move useAuth OUTSIDE to a new wrapper
+const AppRoutes = () => {
+  const { userLoggedIn, loading } = useAuth();
+  const location = useLocation();
+  const hideNavbarRoutes = ["/signin", "/signup"];
 
-function App() {
-  const location = useLocation(); // ✅ Get current route
-  const hideNavbarRoutes = ["/signin", "/signup"]; // ✅ Define routes where Navbar should be hidden
+  if (loading) return <div>Loading...</div>;
 
   return (
-    <AuthProvider>
-      {/* ✅ Show Navbar only if not on Signin or Signup page */}
+    <>
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
-
       <Routes>
-        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            userLoggedIn ? (
+              <Navigate to="/signin" replace />
+            ) : (
+              <Navigate to="/signin" replace />
+            )
+          }
+        />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-
-        {/* Protected Routes */}
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/learn" element={<ProtectedRoute><Learnpage /></ProtectedRoute>} />
         <Route path="/practise" element={<ProtectedRoute><Practise /></ProtectedRoute>} />
-
-        {/* ✅ Redirect Unknown Routes */}
-        <Route path="*" element={<Navigate to="/signin" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </>
+  );
+};
+
+// Keep the Provider at the top level
+function App() {
+  return (
+    <AuthProvider>
+      <AppRoutes />
     </AuthProvider>
   );
 }
+
+// ProtectedRoute stays the same
+const ProtectedRoute = ({ children }) => {
+  const { userLoggedIn, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
+
+  return userLoggedIn ? children : <Navigate to="/signin" replace />;
+};
 
 export default App;

@@ -6,7 +6,7 @@ import os
 
 
 # Load the trained MobileNetV2 model
-MODEL_PATH = "/home/noone/Documents/jupyternotebookk/Sign-language-tutor-with-real-time-feedback/sign_language_10_epoch_mobilelNETv2.h5"
+MODEL_PATH = "ml-model/sign_mobileNET_V2.h5"
 model = tf.keras.models.load_model(MODEL_PATH)
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1" 
 
